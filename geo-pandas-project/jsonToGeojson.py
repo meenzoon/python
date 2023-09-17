@@ -2,6 +2,7 @@ from string import Template
 
 import pandas as pd
 from shapely import wkt
+from geojson import Feature, LineString, dump
 
 # 기본 geojson 문자열 형태 지정
 geoJsonTemplate = Template("""
@@ -21,11 +22,16 @@ for i in range(0, len(df)):
     geom = wkt.loads(row['geom'])
     coords = geom.coords
 
+    lineStr = LineString([(coords[0][0], coords[0][1]), (coords[1][0], coords[1][1])])
+    feat = Feature(geometry=lineStr, properties={"id": row['id'], "link_id": row['link_id'], "degree": row['drc_val']})
+
     # geojson 데이터 작성
+    '''
     data = geoJsonTemplate.substitute(lon1=coords[0][0], lat1=coords[0][1], lon2=coords[1][0], lat2=coords[1][1],
                                       name=row['link_id'])
+    '''
 
     f.write('{"index": {"_index": "link"}}')
-    f.write(data + '\n')
+    dump(feat, f)
 
 f.close()
