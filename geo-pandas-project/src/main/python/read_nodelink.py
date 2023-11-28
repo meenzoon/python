@@ -7,7 +7,7 @@ path = '/Users/meenzoon/Downloads/'
 link_file = 'nodelink/nodelink.shp'
 shp_file = os.path.join(path, link_file)
 # shp 파일 읽기
-link = gpd.read_file(shp_file)
+link = gpd.read_file(shp_file, encoding='CP949')
 
 highway_output_file = os.path.join(path, 'highway.json')
 highway_f = open(highway_output_file, 'w')
